@@ -14,7 +14,7 @@ const aiRoutes = require("./routes/ai");
 const app = express();
 
 // allow only your frontend origin (replace with exact origin)
-const FRONTEND_ORIGIN = "https://assignment-devfolio.vercel.app";
+const FRONTEND_ORIGIN = "https://assignment-devvoid.vercel.app";
 
 app.use(cors({
   origin: FRONTEND_ORIGIN,      // do NOT use '*' if you send credentials
