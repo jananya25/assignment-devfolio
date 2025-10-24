@@ -1,10 +1,8 @@
-// If this file will run as an Express server locally (or on a host that supports persistent servers)
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/database");
 
-// routes...
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
 const columnRoutes = require("./routes/columns");
@@ -13,21 +11,14 @@ const aiRoutes = require("./routes/ai");
 
 const app = express();
 
-// allow only your frontend origin (replace with exact origin)
-const FRONTEND_ORIGIN = "https://assignment-devvoid.vercel.app";
 
 app.use(cors({
-  origin: FRONTEND_ORIGIN,      // do NOT use '*' if you send credentials
+  origin: ["https://assignment-devvoid.vercel.app", "http://localhost:5175"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true
 }));
 
-// allow preflight for all routes explicitly
-app.options("*", cors({
-  origin: FRONTEND_ORIGIN,
-  credentials: true
-}));
 
 app.use(express.json());
 connectDB();
@@ -49,7 +40,6 @@ app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-const PORT = process.env.PORT || 8000;
 
 module.exports = app;
 
@@ -57,4 +47,3 @@ if (require.main === module) {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => console.log(`Server running locally on port ${PORT}`));
 }
-
