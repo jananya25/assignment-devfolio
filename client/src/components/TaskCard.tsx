@@ -32,6 +32,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
     isDragging: isSortableDragging,
@@ -47,24 +48,24 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     <Card
       ref={setNodeRef}
       style={style}
-      className={`cursor-pointer hover:shadow-md transition-shadow ${
+      className={`cursor-default transition-shadow hover:shadow-md ${
         isDragging ? "shadow-lg" : ""
       }`}
       {...attributes}
-      {...listeners}>
+    >
       <CardContent className="p-3">
         <div className="flex items-start justify-between">
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-medium text-gray-900 truncate">
+          <div className="min-w-0 flex-1">
+            <h4 className="truncate text-sm font-medium text-gray-900">
               {task.title}
             </h4>
             {task.description && (
-              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+              <p className="mt-1 line-clamp-2 text-xs text-gray-500">
                 {task.description}
               </p>
             )}
           </div>
-          <div className="flex items-center space-x-1 ml-2">
+          <div className="ml-2 flex items-center space-x-1">
             <Button
               variant="ghost"
               size="sm"
@@ -72,7 +73,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 e.stopPropagation();
                 onEdit(task);
               }}
-              className="h-6 w-6 p-0 text-gray-400 hover:text-blue-600">
+              className="h-6 w-6 p-0 text-gray-400 hover:text-blue-600"
+            >
               <Edit className="h-3 w-3" />
             </Button>
             <Button
@@ -80,12 +82,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               size="sm"
               onClick={(e) => {
                 e.stopPropagation();
+                console.log("Deleting task:", task._id);
                 onDelete(task._id);
               }}
-              className="h-6 w-6 p-0 text-gray-400 hover:text-red-600">
+              className="h-6 w-6 p-0 text-gray-400 hover:text-red-600"
+            >
               <Trash2 className="h-3 w-3" />
             </Button>
-            <div className="cursor-grab">
+            <div
+              ref={setActivatorNodeRef}
+              className="cursor-grab touch-none"
+              {...listeners}
+            >
               <GripVertical className="h-3 w-3 text-gray-400" />
             </div>
           </div>
